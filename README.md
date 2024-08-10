@@ -7,6 +7,8 @@ Docker를 이용해 구축 후 AWS로 배포할 예정.
 3. 터미널에서 파일이 위치한 디렉토리로 이동하여 아래 코드 실행
 
 ```
+docker compose run --entrypoint "poetry install --no-root" coda-app
+docker compose build --no-cache
 docker compose build
 docker compose up
 ```
