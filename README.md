@@ -11,4 +11,4 @@ docker compose build
 docker compose up
 ```
 
-4. http://localhost:8000/docs 접속
+4. http://localhost:8000/docs or http://localhost:8000/redoc 접속
