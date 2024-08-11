@@ -24,7 +24,8 @@ class PrivateGroup(Base):
     user_user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, unique=True)
     private_group_header_path = Column(String(100))
 
-    user = relationship("User", back_populates="private_groups")
+    user = relationship("User", back_populates="private_group")
+    posts = relationship("Posts", back_populates="private_group", cascade="delete")
 
 class PublicGroup(Base):
     __tablename__ = 'public_group'
@@ -35,7 +36,8 @@ class PublicGroup(Base):
     public_group_name = Column(String(45))
     num_users = Column(Integer)
 
-    posts = relationship("Posts", back_populates="public_group")
+    user = relationship("UserHasPublicGroup", back_populates="public_group")
+    posts = relationship("Posts", back_populates="public_group", cascade="delete")
 
 class UserHasPublicGroup(Base):
     __tablename__ = 'user_has_public_group'
@@ -46,7 +48,7 @@ class UserHasPublicGroup(Base):
     group_order = Column(Integer, nullable=False)
 
     user = relationship("User", back_populates="public_groups")
-    public_group = relationship("PublicGroup", back_populates="users")
+    public_group = relationship("PublicGroup", back_populates="user")
 
 class Posts(Base):
     __tablename__ = 'posts'
@@ -58,10 +60,11 @@ class Posts(Base):
     private_group_private_group_id = Column(Integer, ForeignKey('private_group.private_group_id'))
     post_header_path = Column(String(100), nullable=False)
 
+    private_group = relationship("PrivateGroup", back_populates="posts")
     public_group = relationship("PublicGroup", back_populates="posts")
-    reactions = relationship("Reaction", back_populates="post")
-    pictures = relationship("Picture", back_populates="post")
-    drawings = relationship("Drawing", back_populates="post")
+    reactions = relationship("Reaction", back_populates="post", cascade="delete")
+    pictures = relationship("Picture", back_populates="post", cascade="delete")
+    drawings = relationship("Drawing", back_populates="post", cascade="delete")
 
 class Reaction(Base):
     __tablename__ = 'reaction'
@@ -69,10 +72,11 @@ class Reaction(Base):
     reaction_id = Column(Integer, primary_key=True, index=True)
     posts_post_id = Column(Integer, ForeignKey('posts.post_id'), nullable=False)
     reaction_user_id = Column(Integer, nullable=False)
-    emoji_emoji_id = Column(Integer, ForeignKey('emoji.emoji_id'), nullable=False)
+    emoji_id = Column(Integer, nullable=False)
+    # emoji_emoji_id = Column(Integer, ForeignKey('emoji.emoji_id'), nullable=False)
 
     post = relationship("Posts", back_populates="reactions")
-    emoji = relationship("Emoji", back_populates="reactions")
+    # emoji = relationship("Emoji", back_populates="reactions")
 
 class Picture(Base):
     __tablename__ = 'picture'
@@ -94,13 +98,13 @@ class Drawing(Base):
 
     post = relationship("Posts", back_populates="drawings")
 
-class Emoji(Base):
-    __tablename__ = 'emoji'
+# class Emoji(Base):
+#     __tablename__ = 'emoji'
 
-    emoji_id = Column(Integer, primary_key=True, index=True)
-    emoji_path = Column(String(100))
+#     emoji_id = Column(Integer, primary_key=True, index=True)
+#     emoji_path = Column(String(100))
 
-    reactions = relationship("Reaction", back_populates="emoji")
+#     reactions = relationship("Reaction", back_populates="emoji", uselist=False)
 
 class PoseToGloss(Base):
     __tablename__ = 'pose_to_gloss'
