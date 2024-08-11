@@ -18,7 +18,6 @@ class Register(UserBase):
 
 class RegisterResponse(Register):
     user_id: int
-    private_group_id: int
 
     class Config:
         orm_mode = True
