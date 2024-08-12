@@ -1,1 +1,6 @@
 .pyc
+/api/.pyc
+/api/cruds/.pyc
+/api/models/.pyc
+/api/schemas/.pyc
+/api/routers/.pyc
