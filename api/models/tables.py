@@ -15,13 +15,13 @@ class User(Base):
     user_text_available = Column(Boolean, nullable=False)
 
     private_group = relationship("PrivateGroup", back_populates="user", cascade="delete")
-    public_groups = relationship("UserHasPublicGroup", back_populates="user")
+    public_groups = relationship("UserHasPublicGroup", back_populates="user", cascade="delete")
 
 class PrivateGroup(Base):
     __tablename__ = 'private_group'
 
     private_group_id = Column(Integer, primary_key=True, index=True)
-    user_user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False, unique=True)
+    user_user_id = Column(Integer, ForeignKey('user.user_id', ondelete='CASCADE'), nullable=False, unique=True)
     private_group_header_path = Column(String(100))
 
     user = relationship("User", back_populates="private_group")
@@ -43,8 +43,8 @@ class UserHasPublicGroup(Base):
     __tablename__ = 'user_has_public_group'
 
     user_public_id = Column(Integer, primary_key=True, index=True)
-    user_user_id = Column(Integer, ForeignKey('user.user_id'), nullable=False)
-    public_group_public_group_id = Column(Integer, ForeignKey('public_group.public_group_id'), nullable=False)
+    user_user_id = Column(Integer, ForeignKey('user.user_id', ondelete='CASCADE'), nullable=False)
+    public_group_public_group_id = Column(Integer, ForeignKey('public_group.public_group_id', ondelete='CASCADE'), nullable=False)
     group_order = Column(Integer, nullable=False)
 
     user = relationship("User", back_populates="public_groups")
@@ -56,8 +56,8 @@ class Posts(Base):
     post_id = Column(Integer, primary_key=True, index=True)
     creation_date = Column(DateTime, nullable=False)
     creation_user_id = Column(Integer, nullable=False)
-    public_group_public_group_id = Column(Integer, ForeignKey('public_group.public_group_id'))
-    private_group_private_group_id = Column(Integer, ForeignKey('private_group.private_group_id'))
+    public_group_public_group_id = Column(Integer, ForeignKey('public_group.public_group_id', ondelete='CASCADE'))
+    private_group_private_group_id = Column(Integer, ForeignKey('private_group.private_group_id', ondelete='CASCADE'))
     post_header_path = Column(String(100), nullable=False)
 
     private_group = relationship("PrivateGroup", back_populates="posts")
@@ -70,7 +70,7 @@ class Reaction(Base):
     __tablename__ = 'reaction'
 
     reaction_id = Column(Integer, primary_key=True, index=True)
-    posts_post_id = Column(Integer, ForeignKey('posts.post_id'), nullable=False)
+    posts_post_id = Column(Integer, ForeignKey('posts.post_id', ondelete='CASCADE'), nullable=False)
     reaction_user_id = Column(Integer, nullable=False)
     emoji_id = Column(Integer, nullable=False)
     # emoji_emoji_id = Column(Integer, ForeignKey('emoji.emoji_id'), nullable=False)
@@ -82,7 +82,7 @@ class Picture(Base):
     __tablename__ = 'picture'
 
     picture_id = Column(Integer, primary_key=True, index=True)
-    posts_post_id = Column(Integer, ForeignKey('posts.post_id'), nullable=False)
+    posts_post_id = Column(Integer, ForeignKey('posts.post_id', ondelete='CASCADE'), nullable=False)
     picture_path = Column(String(100), nullable=False)
 
     post = relationship("Posts", back_populates="pictures")
@@ -91,7 +91,7 @@ class Drawing(Base):
     __tablename__ = 'drawing'
 
     drawing_id = Column(Integer, primary_key=True, index=True)
-    posts_post_id = Column(Integer, ForeignKey('posts.post_id'), nullable=False)
+    posts_post_id = Column(Integer, ForeignKey('posts.post_id', ondelete='CASCADE'), nullable=False)
     drawing_path = Column(String(100), nullable=False)
     drawing_order = Column(Integer, nullable=False)
     drawing_caption = Column(String(100), nullable=False)
