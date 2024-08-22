@@ -5,6 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func  # Add this line to import the func function
 import api.models.tables as tables
 import api.schemas.group as group_schema
+from sqlalchemy.orm import joinedload
+import json
+
 
 import random
 
@@ -44,8 +47,8 @@ async def update_user_has_public_group(db: AsyncSession, user_id:int, public_gro
     return
 
 # 9. 그룹 유저 초대
-async def group_user_invite(db: AsyncSession, invite:group_schema.PublicGroupInvite) -> group_schema.PublicGroupInviteResponse:
-    stmt = select(tables.PublicGroup).filter(tables.PublicGroup.public_group_id == invite.public_group_id)
+async def group_user_invite(db: AsyncSession, public_group_id) -> group_schema.PublicGroupInviteResponse:
+    stmt = select(tables.PublicGroup).filter(tables.PublicGroup.public_group_id == public_group_id)
     result = await db.execute(stmt)
     public_group_check = result.scalars().first()
 
@@ -53,7 +56,7 @@ async def group_user_invite(db: AsyncSession, invite:group_schema.PublicGroupInv
         return None
     
     random_num = random.randint(100000, 999999)
-    db_access_key = tables.GroupAccess(**invite.dict(), access_key=random_num)
+    db_access_key = tables.GroupAccess(public_group_id=public_group_id, access_key=random_num)
     db.add(db_access_key)
     await db.commit()
     await db.refresh(db_access_key)
@@ -135,24 +138,34 @@ async def group_user_quit(db: AsyncSession, public_group_id: int, user_id: int) 
 
 
 
-# 12. 개인그룹 메인 화면 정보 조회
-async def private_group_post_list(db:AsyncSession, private_group_id: int) -> list[group_schema.PrivateGroupPostResponse]:
-    stmt = select(tables.Posts).filter(tables.Posts.private_group_private_group_id == private_group_id)
+# 개인그룹 메인 화면 정보 조회
+async def private_group_post_list(db: AsyncSession, private_group_id: int) -> list[group_schema.PrivateGroupPostResponse]:
+    stmt = select(tables.Posts).filter(tables.Posts.private_group_private_group_id == private_group_id).options(joinedload(tables.Posts.drawings))
     result = await db.execute(stmt)
-    db_posts = result.scalars().all()
+    db_posts = result.unique().scalars().all()
 
-    posts = [group_schema.PrivateGroupPostResponse(**i.__dict__) for i in db_posts]
+    posts = []
+    for post in db_posts:
+        post_dict = post.__dict__.copy()
+        posts.append(group_schema.PrivateGroupPostResponse(**post_dict))  # 리스트 그대로 반환
+
     return posts
 
-
-# 13. 공유그룹 메인 화면 정보 조회
+# 공유그룹 메인 화면 정보 조회
 async def public_group_post_list(db: AsyncSession, public_group_id: int) -> list[group_schema.PublicGroupPostResponse]:
-    stmt = select(tables.Posts).filter(tables.Posts.public_group_public_group_id == public_group_id)
+    stmt = select(tables.Posts).filter(tables.Posts.public_group_public_group_id == public_group_id).options(joinedload(tables.Posts.drawings))
     result = await db.execute(stmt)
-    db_posts = result.scalars().all()
+    db_posts = result.unique().scalars().all()
 
-    posts = [group_schema.PublicGroupPostResponse(**i.__dict__) for i in db_posts]
+    posts = []
+    for post in db_posts:
+        post_dict = post.__dict__.copy()
+        posts.append(group_schema.PublicGroupPostResponse(**post_dict))  # 리스트 그대로 반환
+
     return posts
+
+
+
 
 async def get_private_group(db: AsyncSession, private_group_id: int):
     stmt = select(tables.PrivateGroup).filter(tables.PrivateGroup.private_group_id == private_group_id)

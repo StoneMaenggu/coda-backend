@@ -21,9 +21,9 @@ async def login(db: AsyncSession, login_body: login_schema.Login):
     result = await db.execute(stmt)
     user = result.scalars().first()
     if user is None:
-        return login_schema.LoginResponse(login_success=False, **login_body.dict())
+        return login_schema.LoginResponse(user_id=0,login_success=False, **login_body.dict())
     if user.user_password == login_body.user_password:
-        return login_schema.LoginResponse(login_success=True, **login_body.dict())
+        return login_schema.LoginResponse(user_id=user.user_id, login_success=True, **login_body.dict())
     else:
-        return login_schema.LoginResponse(login_success=False, **login_body.dict())
+        return login_schema.LoginResponse(user_id=0, login_success=False, **login_body.dict())
     

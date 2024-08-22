@@ -14,12 +14,13 @@ class IdCheckResponse(IdCheck):
     id_exist: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class LoginResponse(Login):
     login_success: bool
+    user_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 

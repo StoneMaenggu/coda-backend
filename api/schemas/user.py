@@ -20,7 +20,7 @@ class RegisterResponse(Register):
     user_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 4. 유저 정보 조회
 # 5. 유저 정보 수정
@@ -28,7 +28,7 @@ class User(UserBase):
     user_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 7-1. 유저의 개인그룹 리스트 조회
 class UserPrivateGroup(BaseModel):
@@ -36,7 +36,7 @@ class UserPrivateGroup(BaseModel):
     private_group_header_path: str | None = Field(None, example="https://thisisforcoda.com/image/001")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 7-2. 유저의 공유그룹 리스트 조회
 class UserPublicGroup(BaseModel):
@@ -46,7 +46,7 @@ class UserPublicGroup(BaseModel):
     public_group_user_profiles: list[str] | None = Field(None, example=["https://thisisforcoda.com/image/001", "https://thisisforcoda.com/image/002"])
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 

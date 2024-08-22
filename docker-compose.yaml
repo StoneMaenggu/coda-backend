@@ -18,7 +18,7 @@ services:
       TZ: 'Asia/Seoul'  # 시간대를 한국 시간으로 설정
     volumes:
       - mysql_data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password  # MySQL8.0에서는 기본값이 "caching_sha2_password"이라 드라이버가 비지원이므로 변경
+    #command: --default-authentication-plugin=mysql_native_password  # MySQL8.0에서는 기본값이 "caching_sha2_password"이라 드라이버가 비지원이므로 변경
     ports:
       - 33306:3306  # 호스트 머신의 33306번 포트를 docker의 3306번 포트에 연결
 volumes:

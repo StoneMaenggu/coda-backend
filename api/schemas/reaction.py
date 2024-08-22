@@ -9,7 +9,7 @@ class ReactionSendResponse(ReactionSend):
     reaction_id: int | None = Field(None, example=1)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 19. 포스트 별 리액션 조회
 class ReactionList(BaseModel):
@@ -19,6 +19,6 @@ class ReactionList(BaseModel):
     emoji_id: int | None = Field(None, example=1)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
