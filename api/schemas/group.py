@@ -32,7 +32,8 @@ class PublicGroupCreateResponse(PublicGroupCreate):
 
 # 9. 그룹 유저 초대
 class PublicGroupInvite(BaseModel):
-    public_group_id: int | None = Field(None, example=1)
+    # public_group_id: int | None = Field(None, example=1)
+    pass
 
 
 class PublicGroupInviteResponse(PublicGroupInvite):

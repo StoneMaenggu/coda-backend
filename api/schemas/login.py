@@ -18,6 +18,7 @@ class IdCheckResponse(IdCheck):
 
 class LoginResponse(Login):
     login_success: bool
+    user_id: int
 
     class Config:
         orm_mode = True

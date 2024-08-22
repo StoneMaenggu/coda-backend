@@ -44,8 +44,8 @@ async def update_user_has_public_group(db: AsyncSession, user_id:int, public_gro
     return
 
 # 9. 그룹 유저 초대
-async def group_user_invite(db: AsyncSession, invite:group_schema.PublicGroupInvite) -> group_schema.PublicGroupInviteResponse:
-    stmt = select(tables.PublicGroup).filter(tables.PublicGroup.public_group_id == invite.public_group_id)
+async def group_user_invite(db: AsyncSession, public_group_id) -> group_schema.PublicGroupInviteResponse:
+    stmt = select(tables.PublicGroup).filter(tables.PublicGroup.public_group_id == public_group_id)
     result = await db.execute(stmt)
     public_group_check = result.scalars().first()
 
@@ -53,7 +53,7 @@ async def group_user_invite(db: AsyncSession, invite:group_schema.PublicGroupInv
         return None
     
     random_num = random.randint(100000, 999999)
-    db_access_key = tables.GroupAccess(**invite.dict(), access_key=random_num)
+    db_access_key = tables.GroupAccess(public_group_id=public_group_id, access_key=random_num)
     db.add(db_access_key)
     await db.commit()
     await db.refresh(db_access_key)

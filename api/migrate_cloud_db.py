@@ -4,9 +4,9 @@ from sqlalchemy import create_engine, text
 from api.models.tables import Base
 from api.db import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 
-DB_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/?charset=utf8"
+DB_URL = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/?charset=utf8mb4"
 CODA_DB_URL = (
-    f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/codadb?charset=utf8"
+    f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/codadb?charset=utf8mb4"
 )
 
 engine = create_engine(CODA_DB_URL, echo=True)
