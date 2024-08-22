@@ -13,7 +13,7 @@ class PrivateGroupCreateResponse(PrivateGroupCreate):
     private_group_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 8-2. 새 공유그룹 생성
 class PublicGroupBase(BaseModel):
@@ -28,7 +28,7 @@ class PublicGroupCreateResponse(PublicGroupCreate):
     public_group_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 9. 그룹 유저 초대
 class PublicGroupInvite(BaseModel):
@@ -40,7 +40,7 @@ class PublicGroupInviteResponse(PublicGroupInvite):
     access_key: int | None = Field(None, example=123456)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # 10. 기존 그룹 참여
@@ -52,7 +52,7 @@ class PublicGroupJoinResponse(BaseModel):
     public_group_id: int | None = Field(None, example=1)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 
@@ -66,12 +66,12 @@ class PostBase(BaseModel):
 class PrivateGroupPostResponse(PostBase):
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 공유그룹 메인 화면 정보 조회
 class PublicGroupPostResponse(PostBase):
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 

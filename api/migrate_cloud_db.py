@@ -33,7 +33,7 @@ def create_database():
         # demo 데이터베이스가 존재하지 않으면 생성
         root = create_engine(DB_URL, echo=True)
         with root.connect() as conn:
-            conn.execute(text("CREATE DATABASE codadb"))
+            conn.execute(text("CREATE DATABASE codadb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"))
         print("created database")
 
     # DB 모델을 바탕으로 테이블 생성

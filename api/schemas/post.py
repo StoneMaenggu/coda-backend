@@ -31,7 +31,7 @@ class DrawingCreateResponse(DrawingCreate):
     drawing_id: int | None = Field(None, example=1)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # 사진 정보 생성
 class PictureCreate(BaseModel):
@@ -42,13 +42,13 @@ class PictureCreateResponse(PictureCreate):
     picture_id: int | None = Field(None, example=1)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class PostCreateResponse(BaseModel):
     post_id: int | None = Field(None, example=1)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 
@@ -66,7 +66,7 @@ class Post(PostBase):
     picture_paths: List[str] | None = Field(None, example=["https://thisisforcoda.com/image/001", "https://thisisforcoda.com/image/002"])
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 # 16. 그림 캡션 수정
@@ -77,7 +77,7 @@ class CaptionReviseResponse(CaptionRevise):
     pass
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 
