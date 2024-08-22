@@ -9,7 +9,6 @@ import api.schemas.post as post_schema
 
 router = APIRouter()
 
-# 14. 포스트 올리기
 @router.post("/post", response_model=post_schema.PostCreateResponse)
 async def post_create(post_body: post_schema.PostCreate, db: AsyncSession = Depends(get_db)):
     # post table

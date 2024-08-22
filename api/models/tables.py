@@ -1,6 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Text, Boolean
 from sqlalchemy.orm import relationship
 from api.db import Base
+from sqlalchemy import Column, Integer, JSON
 
 class User(Base):
     __tablename__ = 'user'
@@ -50,6 +51,7 @@ class UserHasPublicGroup(Base):
     user = relationship("User", back_populates="public_groups")
     public_group = relationship("PublicGroup", back_populates="user")
 
+
 class Posts(Base):
     __tablename__ = 'posts'
 
@@ -58,7 +60,8 @@ class Posts(Base):
     creation_user_id = Column(Integer, nullable=False)
     public_group_public_group_id = Column(Integer, ForeignKey('public_group.public_group_id', ondelete='CASCADE'))
     private_group_private_group_id = Column(Integer, ForeignKey('private_group.private_group_id', ondelete='CASCADE'))
-    post_header_path = Column(String(100), nullable=False)
+    post_header_path = Column(JSON, nullable=False)  # JSON 타입 사용
+
 
     private_group = relationship("PrivateGroup", back_populates="posts")
     public_group = relationship("PublicGroup", back_populates="posts")

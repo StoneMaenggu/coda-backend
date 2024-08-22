@@ -1,3 +1,10 @@
+import warnings
+from sqlalchemy import create_engine
+from sqlalchemy.exc import SAWarning
+
+# SQLAlchemy 경고 무시
+warnings.filterwarnings('ignore', category=SAWarning)
+
 from sqlalchemy.exc import InternalError, OperationalError
 from sqlalchemy import create_engine, text
 

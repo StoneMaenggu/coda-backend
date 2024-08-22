@@ -55,22 +55,23 @@ class PublicGroupJoinResponse(BaseModel):
         orm_mode = True
 
 
-# 포스트 정보
+
 class PostBase(BaseModel):
     post_id: int | None = Field(None, example=1)
     creation_user_id: int | None = Field(None, example=1)
     creation_date: datetime.date | None = Field(None, example="2024-01-01")
-    post_header_path: str | None = Field(None, example="https://thisisforcoda.com/image/001")
+    post_header_path: list[str] | None = Field(None, example=["https://thisisforcoda.com/image/001"])
 
-# 12. 개인그룹 메인 화면 정보 조회
+# 개인그룹 메인 화면 정보 조회
 class PrivateGroupPostResponse(PostBase):
 
     class Config:
         orm_mode = True
 
-# 13. 공유그룹 메인 화면 정보 조회
+# 공유그룹 메인 화면 정보 조회
 class PublicGroupPostResponse(PostBase):
 
     class Config:
         orm_mode = True
+
 

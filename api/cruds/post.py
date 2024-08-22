@@ -5,18 +5,19 @@ import api.schemas.post as post_schema
 
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
+import json
 
-
-
-# 14. 포스트 올리기
 async def post_create(db: AsyncSession, post: post_schema.PostCreate) -> int:
     group_type = post.group_type
     group_id = post.group_id
+    
+    post_header_path = post.drawing_paths  # 그대로 리스트 형태로 저장
+    
     if group_type == "private":
         db_post = tables.Posts(
             creation_user_id=post.creation_user_id,
             creation_date=post.creation_date,
-            post_header_path=post.post_header_path,
+            post_header_path=post_header_path,  # 리스트를 JSON으로 저장
             private_group_private_group_id=group_id,
             public_group_public_group_id=None
         )
@@ -24,7 +25,7 @@ async def post_create(db: AsyncSession, post: post_schema.PostCreate) -> int:
         db_post = tables.Posts(
             creation_user_id=post.creation_user_id,
             creation_date=post.creation_date,
-            post_header_path=post.post_header_path,
+            post_header_path=post_header_path,  # 리스트를 JSON으로 저장
             private_group_private_group_id=None,
             public_group_public_group_id=group_id
         )
@@ -35,6 +36,9 @@ async def post_create(db: AsyncSession, post: post_schema.PostCreate) -> int:
     await db.commit()
     await db.refresh(db_post)
     return db_post.post_id
+
+
+
 
 
 # 그림 정보 업로드

@@ -8,7 +8,7 @@ DB_HOST = os.environ.get("DB_HOST", "db")
 DB_PORT = os.environ.get("DB_PORT", "3306")
 
 ASYNC_DB_URL = (
-    f"mysql+aiomysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/codadb?charset=utf8"
+    f"mysql+aiomysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/codadb?charset=utf8mb4"
 )
 
 async_engine = create_async_engine(ASYNC_DB_URL, echo=True)
