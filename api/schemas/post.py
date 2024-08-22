@@ -3,10 +3,8 @@ import datetime
 from typing import List
 
 class PostBase(BaseModel):
-    post_id: int | None = Field(None, example=1)
     creation_user_id: int | None = Field(None, example=1)
     creation_date: datetime.date | None = Field(None, example="2024-01-01")
-    post_header_path: List[str] | None = Field(None, example=["https://thisisforcoda.com/image/001", "https://thisisforcoda.com/image/002"])
 
 
 class PostCreate(PostBase):
@@ -57,6 +55,7 @@ class PostCreateResponse(BaseModel):
 # 15. 개별 포스트 정보 조회
 class Post(PostBase):
     post_id: int | None = Field(None, example=1)
+    post_header_path: List[str] | None = Field(None, example=["https://thisisforcoda.com/image/001", "https://thisisforcoda.com/image/002"])
     # 그림 정보 조회
     drawing_ids: List[int] | None = Field(None, example=[1, 2])
     drawing_paths: List[str] | None = Field(None, example=["https://thisisforcoda.com/image/001", "https://thisisforcoda.com/image/002"])
