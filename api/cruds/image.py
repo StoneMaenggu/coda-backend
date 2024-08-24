@@ -40,10 +40,13 @@ from botocore.exceptions import NoCredentialsError
 from fastapi import HTTPException
 from typing import Tuple
 from uuid import uuid4
+from api.access import Access
 
 
 BUCKET_NAME = 'codabucket-flyai'
 REGION_NAME = 'ap-northeast-1'
+s3_access_key = Access().s3_access_key
+s3_secret_key = Access().s3_secret_key
 
 async def upload_image_to_s3(file: bytes, filename: str) -> Tuple[str, str]:
     """
@@ -62,8 +65,8 @@ async def upload_image_to_s3(file: bytes, filename: str) -> Tuple[str, str]:
         unique_filename = f"{uuid4()}_{filename}"
         async with session.client(
             's3',
-            aws_access_key_id='AKIAQLVQQZWMOOLDVB5Z',
-            aws_secret_access_key='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'
+            aws_access_key_id=s3_access_key,
+            aws_secret_access_key=s3_secret_key
         ) as s3_client:
             await s3_client.put_object(Bucket=BUCKET_NAME, Key=unique_filename, Body=file, ContentType='image/jpeg')
         
