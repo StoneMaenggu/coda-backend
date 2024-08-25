@@ -10,7 +10,7 @@ class User(Base):
     phone_num = Column(String(20), unique=True, nullable=False)
     user_password = Column(String(20), nullable=False)
     user_name = Column(String(20), nullable=False)
-    profile_path = Column(String(100))
+    profile_path = Column(String(1000))
     user_sex = Column(Boolean)
     user_birth = Column(DateTime)
     user_text_available = Column(Boolean, nullable=False)
@@ -23,7 +23,7 @@ class PrivateGroup(Base):
 
     private_group_id = Column(Integer, primary_key=True, index=True)
     user_user_id = Column(Integer, ForeignKey('user.user_id', ondelete='CASCADE'), nullable=False, unique=True)
-    private_group_header_path = Column(String(100))
+    private_group_header_path = Column(String(1000))
 
     user = relationship("User", back_populates="private_group")
     posts = relationship("Posts", back_populates="private_group", cascade="delete")
@@ -33,7 +33,7 @@ class PublicGroup(Base):
 
     public_group_id = Column(Integer, primary_key=True, index=True)
     master_user_id = Column(Integer, nullable=False)
-    public_group_header_path = Column(String(100))
+    public_group_header_path = Column(String(1000))
     public_group_name = Column(String(45))
     num_users = Column(Integer)
 
@@ -86,7 +86,7 @@ class Picture(Base):
 
     picture_id = Column(Integer, primary_key=True, index=True)
     posts_post_id = Column(Integer, ForeignKey('posts.post_id', ondelete='CASCADE'), nullable=False)
-    picture_path = Column(String(100), nullable=False)
+    picture_path = Column(String(1000), nullable=False)
 
     post = relationship("Posts", back_populates="pictures")
 
@@ -95,7 +95,7 @@ class Drawing(Base):
 
     drawing_id = Column(Integer, primary_key=True, index=True)
     posts_post_id = Column(Integer, ForeignKey('posts.post_id', ondelete='CASCADE'), nullable=False)
-    drawing_path = Column(String(100), nullable=False)
+    drawing_path = Column(String(1000), nullable=False)
     drawing_order = Column(Integer, nullable=False)
     drawing_caption = Column(String(100), nullable=False)
 
@@ -105,7 +105,7 @@ class Drawing(Base):
 #     __tablename__ = 'emoji'
 
 #     emoji_id = Column(Integer, primary_key=True, index=True)
-#     emoji_path = Column(String(100))
+#     emoji_path = Column(String(1000))
 
 #     reactions = relationship("Reaction", back_populates="emoji", uselist=False)
 
