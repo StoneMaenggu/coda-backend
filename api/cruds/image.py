@@ -1,4 +1,4 @@
-import aioboto3
+import aioboto3 # type: ignore
 from botocore.exceptions import NoCredentialsError
 from fastapi import HTTPException
 from typing import Tuple

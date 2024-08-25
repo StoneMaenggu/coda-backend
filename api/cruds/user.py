@@ -5,6 +5,7 @@ from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 import api.models.tables as tables
 import api.schemas.user as user_schema
+from sqlalchemy.orm import joinedload
 
 # 3. 회원 가입
 async def register_user(db: AsyncSession, user: user_schema.Register) -> tables.User:
@@ -92,9 +93,14 @@ async def user_private_group_list(db: AsyncSession, user_id: int) -> user_schema
 
 # 7-2. 유저의 공유그룹 리스트 조회
 async def user_public_group_list(db: AsyncSession, user_id: int) -> list[user_schema.UserPublicGroup]:
-    stmt = select(tables.UserHasPublicGroup).filter(tables.UserHasPublicGroup.user_user_id == user_id)
+    stmt = (
+        select(tables.UserHasPublicGroup)
+        .filter(tables.UserHasPublicGroup.user_user_id == user_id)
+        .options(joinedload(tables.UserHasPublicGroup.public_group))  # 미리 로드
+    )
     result = await db.execute(stmt)
     user_ = result.scalars().all()
+    
     public_group = [i.public_group for i in user_]
     return public_group
 

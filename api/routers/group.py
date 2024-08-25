@@ -21,13 +21,14 @@ async def public_group_create(group_body: group_schema.PublicGroupCreate, db: As
     result_public_group_id = result.public_group_id
     await group_crud.update_user_has_public_group(db, user_id=result_master_user_id, public_group_id=result_public_group_id)
     
+    await db.commit()  # 커밋 추가
     await db.refresh(result)
     return result
 
 # 9. 그룹 유저 초대
 @router.get("/groups/public/{public_group_id}/invite", response_model=group_schema.PublicGroupInviteResponse)
-async def group_user_invite(public_gruop_id:int, db: AsyncSession = Depends(get_db)):
-    result = await group_crud.group_user_invite(db, public_gruop_id)
+async def group_user_invite(public_group_id:int, db: AsyncSession = Depends(get_db)):
+    result = await group_crud.group_user_invite(db, public_group_id)
     if result is None:
         raise HTTPException(status_code=404, detail="Public group not found")
     return result
