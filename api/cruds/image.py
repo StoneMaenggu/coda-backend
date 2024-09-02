@@ -1,4 +1,4 @@
-import aioboto3
+import aioboto3 # type: ignore
 from botocore.exceptions import NoCredentialsError
 from fastapi import HTTPException
 from typing import Tuple
@@ -25,7 +25,7 @@ async def upload_image_to_s3(file: bytes, filename: str) -> Tuple[str, str]:
     
     try:
         # 고유한 파일명을 생성하기 위해 UUID 사용
-        unique_filename = f"{uuid4()}_{filename}"
+        unique_filename = f"{str(uuid4())[:8]}_{filename}"
         async with session.client(
             's3',
             aws_access_key_id=s3_access_key,
